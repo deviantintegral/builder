@@ -21,12 +21,12 @@ runs:
 
     - shell: bash
       run: |
-        docker pull ghcr.io/home-assistant/amd64-builder:${{ steps.version.outputs.version }}
+        docker pull ghcr.io/deviantintegral/amd64-builder:${{ steps.version.outputs.version }}
 
     - shell: bash
       run: |
         for j in {1..15}; do
-          if CAS_API_KEY= cas authenticate --silent --signerID notary@home-assistant.io docker://ghcr.io/home-assistant/amd64-builder:${{ steps.version.outputs.version }}; then
+          if CAS_API_KEY= cas authenticate --silent --signerID notary@home-assistant.io docker://ghcr.io/deviantintegral/amd64-builder:${{ steps.version.outputs.version }}; then
             exit 0
           fi
           sleep $((5 * j))
@@ -38,7 +38,7 @@ runs:
     - shell: bash
       id: builder
       run: |
-        builder=$(docker images ghcr.io/home-assistant/amd64-builder:${{ steps.version.outputs.version }} -q)
+        builder=$(docker images ghcr.io/deviantintegral/amd64-builder:${{ steps.version.outputs.version }} -q)
         echo "id=$builder" >> "$GITHUB_OUTPUT"
 
     - shell: bash
@@ -52,7 +52,7 @@ runs:
             -v ~/.docker:/root/.docker \
             -v ${{ github.workspace }}:/data \
             --env-file "${{ github.action_path }}/env_file" \
-            ghcr.io/home-assistant/amd64-builder:${{ steps.version.outputs.version }} \
+            ghcr.io/deviantintegral/amd64-builder:${{ steps.version.outputs.version }} \
             ${{ inputs.args }}
 
     - shell: bash
