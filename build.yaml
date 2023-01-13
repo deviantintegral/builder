@@ -1,4 +1,4 @@
-image: "deviantintegral/{arch}-builder"
+image: "ghcr.io/deviantintegral/{arch}-builder"
 shadow_repository: "ghcr.io/deviantintegral"
 build_from:
   aarch64: "ghcr.io/home-assistant/aarch64-base:3.16"
