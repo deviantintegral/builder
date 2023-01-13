@@ -267,7 +267,9 @@ function run_build() {
         fi
 
         bashio::log.info "Init cache for ${repository}/${image}:${version} with tag ${cache_tag} and platform ${docker_platform}"
-        docker pull "${repository}/${image}:${cache_tag}" --platform "${docker_platform}" > /dev/null 2>&1 || true
+	set -x
+        docker pull "${repository}/${image}:${cache_tag}" --platform "${docker_platform}" true
+	set +x
 
         if \
             docker image inspect "${repository}/${image}:${cache_tag}" > /dev/null 2>&1 \
@@ -300,6 +302,7 @@ function run_build() {
 
     # Build image
     bashio::log.info "Run build for ${repository}/${image}:${version} with platform ${docker_platform}"
+    set -x
     docker buildx build --pull --tag "${repository}/${image}:${version}" \
         --platform "${docker_platform}" \
         --build-arg "BUILD_FROM=${build_from}" \
@@ -308,6 +311,7 @@ function run_build() {
         --file "${dockerfile}" \
         "${docker_cli[@]}" \
         "${build_dir}"
+    set +x
 
     # Success?
     # shellcheck disable=SC2181
