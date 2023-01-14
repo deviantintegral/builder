@@ -796,14 +796,7 @@ function codenotary_validate() {
         docker pull "${image}" --platform "${platform}" > /dev/null 2>&1 || bashio::exit.nok "Can't pull image ${image}"
     fi
 
-    for j in {1..15}; do
-        # shellcheck disable=SC1007
-        if CAS_API_KEY= cas authenticate --signerID "${trust}" --silent "docker://${image}" ; then
-            success=true
-            break
-        fi
-        sleep $((5 * j))
-    done
+    success=true
 
     if bashio::var.false "${success}"; then
         bashio::log.warning "Validation of ${image} fails!"
