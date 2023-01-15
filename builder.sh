@@ -268,7 +268,7 @@ function run_build() {
 
         bashio::log.info "Init cache for ${repository}/${image}:${version} with tag ${cache_tag} and platform ${docker_platform}"
 	set -x
-        docker pull "${repository}/${image}:${cache_tag}" --platform "${docker_platform}" true
+        docker pull "${repository}/${image}:${cache_tag}" --platform "${docker_platform}"
 	set +x
 
         if \
