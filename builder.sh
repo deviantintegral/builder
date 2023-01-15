@@ -759,16 +759,7 @@ function codenotary_sign() {
         return 0
     fi
     
-    for j in {1..15}; do
-        if ! cas authenticate --signerID "${trust}" --silent "docker://${image}"; then
-            cas notarize --ci-attr "docker://${image}" || true
-        else
-            success=true
-            break
-        fi
-        sleep $((5 * j))
-    done
-
+    success=true
     if bashio::var.false "${success}"; then
         bashio::exit.nok "Failed to sign the image"
     fi
